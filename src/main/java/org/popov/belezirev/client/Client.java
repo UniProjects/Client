@@ -38,4 +38,26 @@ public class Client {
 		}
 	}
 
+    public static void main(String[] args) {
+        new Thread(() -> {
+            try (Scanner consoleInput = new Scanner(System.in)) {
+                String message = null;
+                while ((message = consoleInput.nextLine()) != null) {
+                    System.out.println(message);
+                }
+            }
+        }).start();
+
+        new Thread(() -> {
+            while (true) {
+                System.out.println("This is test message");
+                try {
+                    Thread.sleep(5000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }
