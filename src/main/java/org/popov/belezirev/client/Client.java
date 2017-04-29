@@ -23,8 +23,8 @@ public class Client {
 				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
 				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				Scanner consoleInput = new Scanner(System.in)) {
-			String message = null;
-			while ((message = consoleInput.nextLine()) != null) {
+			while (true) {
+				String message = consoleInput.nextLine();
 				writer.println(message);
 				writer.flush();
 				String received = reader.readLine();
@@ -38,4 +38,7 @@ public class Client {
 		}
 	}
 
+	public static void main(String[] args) {
+		new Client("localhost", 10513, "").start();
+	}
 }
