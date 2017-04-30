@@ -10,12 +10,12 @@ import java.util.Scanner;
 public class Client {
     private String hostname;
     private int port;
-    private String username;
+    private String userName;
 
     public Client(String hostname, int port, String username) {
         this.hostname = hostname;
         this.port = port;
-        this.username = username;
+        this.userName = username;
     }
 
     public void start() {
@@ -23,11 +23,11 @@ public class Client {
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             Scanner consoleInput = new Scanner(System.in)) {
+            sendMessage(writer, userName);
             Thread writerThread = new Thread(() -> {
                     while (true) {
                         String message = consoleInput.nextLine();
-                        writer.println(message);
-                        writer.flush();
+                    sendMessage(writer, message);
                     }
                 });
             writerThread.start();
@@ -53,8 +53,14 @@ public class Client {
         }
     }
 
+    private void sendMessage(PrintWriter writer, String message) {
+        writer.println(message);
+        writer.flush();
+    }
+
+
     public static void main(String[] args) {
-        new Client("localhost", 10513, "").start();
+        new Client("localhost", 10513, "testUserName").start();
     }
 
 }
