@@ -15,16 +15,18 @@ public class Client {
 	private int port;
 	private String userName;
 	private DefaultMessageProducer messageProducer;
+	private String password;
 
-	public Client(String hostname, int port, String username) {
-		this(hostname, port, username, new DefaultMessageProducer());
+	public Client(String hostname, int port, String username, String password) {
+		this(hostname, port, username, password, new DefaultMessageProducer());
 	}
 
-	public Client(String hostname, int port, String username, DefaultMessageProducer messageProducer) {
+	public Client(String hostname, int port, String username, String password, DefaultMessageProducer messageProducer) {
 		this.hostname = hostname;
 		this.port = port;
 		this.userName = username;
 		this.messageProducer = messageProducer;
+		this.password = password;
 	}
 
 	public void start() throws IOException {
@@ -32,6 +34,7 @@ public class Client {
 				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
 				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
 			sendMessage(writer, userName);
+			sendMessage(writer, password);
 			sendMessage(writer, CONSOLE_CLIENT_DEFAULT_TYPE);
 			Thread writerThread = getWriterThread(writer);
 			writerThread.start();
@@ -95,7 +98,9 @@ public class Client {
 		try (Scanner scanner = new Scanner(System.in)) {
 			System.out.println("Please enter your username: ");
 			String username = scanner.nextLine();
-			new Client("localhost", 10513, username).start();
+			System.out.println("Please enter your password: ");
+			String password = scanner.nextLine();
+			new Client("localhost", 10513, username, password).start();
 		}
 	}
 
